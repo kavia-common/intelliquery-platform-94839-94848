@@ -117,8 +117,4 @@ async function mockFetch(path, { method = 'GET', body, token }) {
   return { ok: true };
 }
 
-// PUBLIC_INTERFACE
-export async function healthCheck(path = '/health') {
-  /** Optional health check helper to verify backend connectivity quickly. */
-  return apiFetch(path, { method: 'GET' });
-}
+
