@@ -1,0 +1,65 @@
+:root {
+  --primary: #2563EB;
+  --secondary: #F59E0B;
+  --success: #F59E0B;
+  --error: #EF4444;
+  --background: #f9fafb;
+  --surface: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --shadow: 0 10px 20px rgba(17, 24, 39, 0.08);
+  --radius: 12px;
+}
+
+/* NavBar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  gap: 16px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 0.2px;
+}
+.brand-badge {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(245,158,11,0.12));
+  border: 1px solid var(--border);
+  display: grid; place-items: center;
+  color: var(--primary);
+}
+
+/* Cards and panels */
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Utility spacing */
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.row { display: flex; align-items: center; gap: 12px; }
+
+/* Badges */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  background: rgba(37,99,235,0.08); color: var(--primary);
+  border: 1px solid rgba(37,99,235,0.18);
+}

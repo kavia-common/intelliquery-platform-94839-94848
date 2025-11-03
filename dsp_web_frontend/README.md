@@ -1,82 +1,52 @@
-# Lightweight React Template for KAVIA
+# DSP Web Frontend (Ocean Professional)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A modern React frontend for a DSP system with authentication, a prompt interface, and backend integration.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- React Router v6 routing: `/login`, `/signup`, `/`
+- AuthContext with localStorage persistence
+- Protected routes for the home page
+- API client using fetch with env-driven base URL and endpoints
+- Mock API mode toggled by `REACT_APP_USE_MOCK_API`
+- Prompt interface with results display
+- Ocean Professional theme (blue + amber accents)
 
-## Getting Started
+## Quick start
 
-In the project directory, you can run:
+1. Install dependencies
+   npm install
 
-### `npm start`
+2. Configure environment
+   cp .env.example .env
+   # Update values as needed
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3. Run the app
+   npm start
 
-### `npm test`
+4. Run tests
+   npm test
 
-Launches the test runner in interactive watch mode.
+## Configuration (.env)
 
-### `npm run build`
+- REACT_APP_API_BASE_URL: e.g., http://localhost:8000
+- REACT_APP_AUTH_LOGIN_ENDPOINT: default /auth/login
+- REACT_APP_AUTH_SIGNUP_ENDPOINT: default /auth/signup
+- REACT_APP_PROMPT_ENDPOINT: default /prompt
+- REACT_APP_USE_MOCK_API: "true" to use mocked endpoints without a backend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Structure
 
-## Customization
+- src/state/authContext.js: Auth provider and hook
+- src/api/client.js: Fetch wrapper, auth header, mock mode
+- src/api/auth.js, src/api/prompt.js: API modules
+- src/components/: NavBar, AuthForm, PromptPanel, ResultList
+- src/pages/: LoginPage, SignupPage, HomePage
+- src/utils/: validators and storage helpers
+- src/styles/theme.css: Ocean Professional theme
 
-### Colors
+## Notes
 
-The main brand colors are defined as CSS variables in `src/App.css`:
+- Protected routes redirect to /login when unauthenticated.
+- On successful login/signup, a token is persisted and used for subsequent API calls.
 
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
-
-### Components
-
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

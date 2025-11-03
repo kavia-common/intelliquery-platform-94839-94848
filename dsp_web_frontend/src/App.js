@@ -1,47 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import NavBar from './components/NavBar';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './state/authContext';
+
+// A lightweight protected route wrapper for React Router v6
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useAuth();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+}
 
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
-
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
-
+  /** App root sets up routes and general layout with Ocean Professional theme. */
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-shell ocean-bg">
+      <NavBar />
+      <main className="container">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+      <footer className="footer">
+        <p className="muted">© {new Date().getFullYear()} DSP Web Frontend</p>
+      </footer>
     </div>
   );
 }
