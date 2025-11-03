@@ -1,18 +1,47 @@
 version: "3.9"
 
 services:
-  express-auth:
-    build: ./intelliquery-platform-94839-94848/dsp_web_frontend/backend/express-auth
-    container_name: express-auth
+  backend:
+    build:
+      context: ./intelliquery-platform-94839-94848/dsp_web_frontend/backend/express-auth
+    container_name: dsp-backend
     environment:
       - NODE_ENV=production
-      - PORT=8000
-      - JWT_SECRET=${JWT_SECRET}
-      - FRONTEND_ORIGIN=${FRONTEND_ORIGIN}
-      # Optional: DATABASE_URL can be set to override default ./data/app.db
+      - PORT=${BACKEND_PORT:-8000}
+      - JWT_SECRET=${JWT_SECRET:-dev-insecure-secret}
+      - FRONTEND_ORIGIN=${FRONTEND_ORIGIN:-http://localhost:3000}
+      # Optional:
       # - DATABASE_URL=${DATABASE_URL}
     ports:
-      - "8000:8000"
+      - "${BACKEND_PORT:-8000}:8000"
     volumes:
       - ./intelliquery-platform-94839-94848/dsp_web_frontend/backend/express-auth/data:/app/data
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./intelliquery-platform-94839-94848/dsp_web_frontend
+      args:
+        # Build-time injection, useful when you want values baked in the bundle
+        REACT_APP_API_BASE_URL: ${REACT_APP_API_BASE_URL:-http://localhost:8000}
+        REACT_APP_AUTH_LOGIN_ENDPOINT: ${REACT_APP_AUTH_LOGIN_ENDPOINT:-/api/auth/login}
+        REACT_APP_AUTH_SIGNUP_ENDPOINT: ${REACT_APP_AUTH_SIGNUP_ENDPOINT:-/api/auth/signup}
+        REACT_APP_PROMPT_ENDPOINT: ${REACT_APP_PROMPT_ENDPOINT:-/api/prompt}
+        REACT_APP_HEALTH_ENDPOINT: ${REACT_APP_HEALTH_ENDPOINT:-/api/health}
+        REACT_APP_USE_MOCK_API: ${REACT_APP_USE_MOCK_API:-false}
+        REACT_APP_WITH_CREDENTIALS: ${REACT_APP_WITH_CREDENTIALS:-false}
+    container_name: dsp-frontend
+    environment:
+      # Runtime env injection (env.js) so you can override without rebuild:
+      - RUNTIME_API_BASE_URL=${REACT_APP_API_BASE_URL:-http://localhost:8000}
+      - RUNTIME_AUTH_LOGIN_ENDPOINT=${REACT_APP_AUTH_LOGIN_ENDPOINT:-/api/auth/login}
+      - RUNTIME_AUTH_SIGNUP_ENDPOINT=${REACT_APP_AUTH_SIGNUP_ENDPOINT:-/api/auth/signup}
+      - RUNTIME_PROMPT_ENDPOINT=${REACT_APP_PROMPT_ENDPOINT:-/api/prompt}
+      - RUNTIME_HEALTH_ENDPOINT=${REACT_APP_HEALTH_ENDPOINT:-/api/health}
+      - RUNTIME_USE_MOCK_API=${REACT_APP_USE_MOCK_API:-false}
+      - RUNTIME_WITH_CREDENTIALS=${REACT_APP_WITH_CREDENTIALS:-false}
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
     restart: unless-stopped

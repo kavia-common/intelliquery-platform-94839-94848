@@ -13,7 +13,27 @@ A modern React frontend for a DSP system with authentication, a prompt interface
 - Ocean Professional theme (blue + amber accents)
 - NavBar health indicator for backend status (Online/Offline/Checking)
 
-## Quick start
+## Quick start (Docker)
+
+From the repository root:
+
+1) Optionally create `.env` with overrides:
+   REACT_APP_API_BASE_URL=http://localhost:8000
+   REACT_APP_AUTH_LOGIN_ENDPOINT=/api/auth/login
+   REACT_APP_AUTH_SIGNUP_ENDPOINT=/api/auth/signup
+   REACT_APP_PROMPT_ENDPOINT=/api/prompt
+   REACT_APP_HEALTH_ENDPOINT=/api/health
+   REACT_APP_USE_MOCK_API=false
+   REACT_APP_WITH_CREDENTIALS=false
+
+2) Start both services:
+   docker compose up -d --build
+
+3) Visit http://localhost:3000
+
+The backend runs on http://localhost:8000 and CORS allows `http://localhost:3000` by default.
+
+## Local quick start (without Docker)
 
 1. Install dependencies
    npm install
@@ -76,3 +96,9 @@ Customize:
 - Protected routes redirect to /login when unauthenticated.
 - On successful login/signup, a token is persisted and used for subsequent API calls.
 
+## Docker Details
+
+- The frontend image builds the React app and serves it with Nginx on port 80 (host 3000).
+- The backend image runs Express on port 8000 with an SQLite DB persisted at `backend/express-auth/data`.
+- CORS: Backend allows `http://localhost:3000` by default; override with FRONTEND_ORIGIN.
+- Env at runtime: The container also generates `/usr/share/nginx/html/env.js` from `RUNTIME_*` env vars so you can switch API endpoints without a rebuild in the future.
