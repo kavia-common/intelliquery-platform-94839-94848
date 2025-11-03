@@ -34,6 +34,7 @@ A modern React frontend for a DSP system with authentication, a prompt interface
 - REACT_APP_AUTH_SIGNUP_ENDPOINT: default /auth/signup
 - REACT_APP_PROMPT_ENDPOINT: default /prompt
 - REACT_APP_USE_MOCK_API: "true" to use mocked endpoints without a backend
+- REACT_APP_WITH_CREDENTIALS: "true" if your backend uses cookies/sessions and requires credentials on CORS requests
 
 ## Structure
 
