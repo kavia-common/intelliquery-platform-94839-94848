@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  express-auth:
+    build: ./intelliquery-platform-94839-94848/dsp_web_frontend/backend/express-auth
+    container_name: express-auth
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - JWT_SECRET=${JWT_SECRET}
+      - FRONTEND_ORIGIN=${FRONTEND_ORIGIN}
+      # Optional: DATABASE_URL can be set to override default ./data/app.db
+      # - DATABASE_URL=${DATABASE_URL}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./intelliquery-platform-94839-94848/dsp_web_frontend/backend/express-auth/data:/app/data
+    restart: unless-stopped

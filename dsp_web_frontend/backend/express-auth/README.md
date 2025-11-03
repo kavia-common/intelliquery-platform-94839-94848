@@ -27,10 +27,38 @@ Minimal Node.js Express backend with SQLite for username/password signup and log
 
 Server runs at http://localhost:8000 by default.
 
+## Docker
+
+You can run this backend in Docker with a persistent SQLite volume and production NODE_ENV.
+
+Steps:
+1) From this folder, copy env file and set required values:
+   cp .env.example .env
+   # Set JWT_SECRET and FRONTEND_ORIGIN (and PORT if not 8000)
+
+2) From the repository root (where docker-compose.yml is located), build and start:
+   docker compose up --build
+
+What this does:
+- Builds the image from backend/express-auth
+- Runs the service on port 8000 (container and host)
+- Sets NODE_ENV=production inside the container
+- Mounts ./backend/express-auth/data to /app/data so the SQLite DB persists across restarts
+
+Health check:
+- GET http://localhost:8000/api/health
+- Expected: { "status": "ok" }
+
+Notes:
+- Environment variables are taken from your root .env via Compose:
+  - JWT_SECRET, FRONTEND_ORIGIN, PORT=8000 (default)
+  - Optionally set DATABASE_URL to override default ./data/app.db
+- CORS must allow your frontend origin via FRONTEND_ORIGIN.
+
 ## Environment Variables (.env)
 
 - PORT: Port to listen on (default 8000)
-- JWT_SECRET: Secret used to sign JWTs (required for production)
+- JWT_SECRET: Secret used to sign JWTs (required in production)
 - DATABASE_URL: Optional path to SQLite file (default: ./data/app.db)
 - FRONTEND_ORIGIN: Override/extend allowed CORS origin (e.g., your preview URL)
 - PREVIEW_ORIGIN: Optionally add another explicit CORS origin (e.g., CI preview)
